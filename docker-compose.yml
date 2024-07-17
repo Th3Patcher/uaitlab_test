@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  php:
+    container_name: php
+    build:
+      context: ./docker/php
+    volumes:
+      - ./app:/var/www/html
+
+  app:
+    image: nginx:1.27.0-alpine
+    container_name: app
+    working_dir: /var/www/html
+    volumes:
+      - ./app:/var/www/html
+      - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "8080:80"
+
+  node:
+    image: node:22-alpine
+    container_name: node
+    working_dir: /var/www/html
+    command: sh -c "npm install && npm run dev -- --host"
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./app:/var/www/html
+
+  db:
+    image: mysql:8
+    container_name: db
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_ROOT_HOST: "%"
+      MYSQL_ROOT_PASSWORD: "${DB_PASSWORD}"
+      MYSQL_DATABASE: "{$DB_DATABASE}"
+      MYSQL_USER: "{$DB_USERNAME}"
+      MYSQL_PASSWORD: "{$DB_PASSWORD}"
+    volumes:
+      - ./docker/mysql:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmydb
+    ports:
+      - "9090:80"
+    environment:
+      - PMA_HOST=db
+      - PMA_PORT=3306
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    command: redis-server --appendonly yes --requirepass "root"
+    volumes:
+      - ./docker/redis:/data
+    ports:
+      - "6379:6379"
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PASSWORD=root
+
+  redisinsight:
+    image: redis/redisinsight:latest
+    container_name: redis-ui
+    restart: always
+    ports:
+      - "5540:5540"
+    volumes:
+      - ./docker/redisinsight:/data
