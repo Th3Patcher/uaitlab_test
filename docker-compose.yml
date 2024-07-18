@@ -28,13 +28,12 @@ services:
     volumes:
       - ./app:/var/www/html
 
-  db:
+  mysql:
     image: mysql:8
     container_name: db
     ports:
       - "3306:3306"
     environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
       MYSQL_ROOT_HOST: "%"
       MYSQL_ROOT_PASSWORD: "${DB_PASSWORD}"
       MYSQL_DATABASE: "{$DB_DATABASE}"
@@ -49,7 +48,7 @@ services:
     ports:
       - "9090:80"
     environment:
-      - PMA_HOST=db
+      - PMA_HOST=mysql
       - PMA_PORT=3306
 
   redis:
@@ -62,7 +61,7 @@ services:
       - "6379:6379"
     environment:
       - REDIS_HOST=redis
-      - REDIS_PASSWORD=root
+      - REDIS_PASSWORD="{$REDIS_PASSWORD}"
 
   redisinsight:
     image: redis/redisinsight:latest
