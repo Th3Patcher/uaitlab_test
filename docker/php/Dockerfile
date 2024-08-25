@@ -13,7 +13,7 @@ RUN apt-get -y update && apt-get upgrade -y && \
     libxml2-dev \
     libzip-dev \
     nano \
-    && docker-php-ext-install zip pdo pdo_mysql zip exif pcntl mbstring \
+    && docker-php-ext-install zip gd pdo pdo_mysql zip exif pcntl mbstring \
     && pecl install xdebug-3.2.0 \
     && docker-php-ext-enable xdebug pdo_mysql
 
