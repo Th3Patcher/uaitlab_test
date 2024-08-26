@@ -1,34 +1,28 @@
 <?php
 
-namespace App\Services\Abstract;
+namespace App\Contracts\Parse;
 
-abstract class FileParseAbstract
+abstract class FileParse
 {
     /**
-     * Name of the table which going to fill
-     *
-     * @var string
+     * Opening a file for reading data
      */
-    protected string $tableName;
+    abstract protected function openFile($fileName);
 
     /**
      * Parsing a file and getting data of each row
      */
-    abstract public function parseFile();
-
-    /**
-     * Opening a file for reading data
-     */
-    abstract protected function openFile();
+    abstract public function parseFile($class, $fileName);
 
     /**
      * Finding the difference between a table and a file
      * if false, then the file doesn't match the table
      *
      * @param $worksheet
+     * @param $tableName
      * @return bool
      */
-    protected function diffBetweenTableAndFileHeaders($worksheet): bool
+    protected function diffBetweenTableAndFileHeaders($worksheet, $tableName): bool
     {
         $row = $worksheet->getRowIterator(1)->current();
         $cellIterator = $row->getCellIterator();
@@ -38,6 +32,6 @@ abstract class FileParseAbstract
             $columns[] = $cell->getValue();
         }
 
-        return !array_diff($columns, \Schema::getColumnListing($this->tableName));
+        return !array_diff($columns, \Schema::getColumnListing($tableName));
     }
 }

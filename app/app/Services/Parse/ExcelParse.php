@@ -1,43 +1,35 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Parse;
 
 use Exception;
-use App\Models;
-use App\Services\Abstract\FileParseAbstract;
+use App\Contracts\Parse\FileParse;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
-class ExcelParseService extends FileParseAbstract
+class ExcelParse extends FileParse
 {
-
-    private string $fileName;
-
-    public function __construct($class, string $fileName)
-    {
-        $this->tableName = (new $class)->getTable();
-        $this->fileName = $fileName;
-    }
-
-    protected function openFile(): Spreadsheet
+    protected function openFile($fileName): Spreadsheet
     {
         $reader = new Xlsx();
         $reader->setReadDataOnly(true);
-        return $reader->load(storage_path('app/public/excel/' . $this->fileName));
+        return $reader->load(storage_path('app/public/excel/' . $fileName));
     }
 
     /**
+     * @param $class
+     * @param $fileName
      * @return array
      * @throws Exception
      */
-    public function parseFile(): array
+    public function parseFile($class, $fileName): array
     {
-        //Data of each row
+        //Will save data of each row
         $data = array();
 
-        $worksheet = $this->openFile()->getActiveSheet();
+        $worksheet = $this->openFile($fileName)->getActiveSheet();
 
-        if (!$this->diffBetweenTableAndFileHeaders($worksheet)) {
+        if (!$this->diffBetweenTableAndFileHeaders($worksheet, (new $class)->getTable())) {
             throw new Exception('There are difference between the file\'s and table\'s columns.');
         }
 

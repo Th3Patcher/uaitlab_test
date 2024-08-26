@@ -3,9 +3,8 @@
 namespace App\Console\Commands;
 
 use Exception;
-use App\Models\WarrantyClaims;
-use App\Services\ExcelParseService;
-use App\Services\InsertionDataService;
+use App\Contracts\Parse\FileParse;
+use App\Services\Insert\InsertionData;
 use Illuminate\Console\Command;
 
 class ParseExcel extends Command
@@ -29,7 +28,7 @@ class ParseExcel extends Command
      * Execute the console command.
      * @throws Exception
      */
-    public function handle()
+    public function handle(FileParse $fileParse, InsertionData $insertionData): void
     {
         $truncate = $this->option('truncate');
         $filename = $this->argument('filename');
@@ -48,8 +47,8 @@ class ParseExcel extends Command
                 $modelClass::truncate();
             }
 
-            $data = (new ExcelParseService($modelClass, $filename))->parseFile();
-            (new InsertionDataService())->insertArrayIntoTable($data, $modelClass);
+            $data = $fileParse->parseFile($modelClass, $filename);
+            $insertionData->insertArrayIntoTable($data, $modelClass);
 
             $this->info('File was successfully parsed.');
         } catch (Exception $exception) {
