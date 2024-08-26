@@ -2,7 +2,6 @@
 
 namespace App\Repositories;
 
-use App\Http\Requests\WarrantyClaimsSearchRequest;
 use App\Models\WarrantyClaims;
 
 class WarrantyClaimsRepository

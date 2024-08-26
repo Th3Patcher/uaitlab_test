@@ -11,7 +11,6 @@ class WarrantyClaimsController extends Controller
     public function search(WarrantyClaimsSearchRequest $request, WarrantyClaimsRepository $warrantyClaimsRepository) {
         $validated = $request->validated();
         $warrantyClaims = $warrantyClaimsRepository->buildSearchQuery($validated);
-
         return response()->json($warrantyClaims);
     }
 

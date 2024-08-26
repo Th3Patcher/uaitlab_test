@@ -3,11 +3,11 @@
 namespace App\Console\Commands;
 
 use Exception;
-use App\Contracts\Parse\FileParse;
+use App\Contracts\Parser\FileParser;
 use App\Services\Insert\InsertionData;
 use Illuminate\Console\Command;
 
-class ParseExcel extends Command
+class ParseExcelCommand extends Command
 {
     /**
      * The name and signature of the console command.
@@ -28,26 +28,19 @@ class ParseExcel extends Command
      * Execute the console command.
      * @throws Exception
      */
-    public function handle(FileParse $fileParse, InsertionData $insertionData): void
+    public function handle(InsertionData $insertionData): void
     {
-        $truncate = $this->option('truncate');
-        $filename = $this->argument('filename');
-        $model = $this->argument('model');
-
-        $modelClass = "App\\Models\\{$model}";
-
-        // Check whether the model class exists and is inherited from the base model
-        if (!class_exists($modelClass) || !is_subclass_of($modelClass, \Illuminate\Database\Eloquent\Model::class)) {
-            $this->error("The provided model '{$modelClass}' is not valid.");
-            return;
-        }
+        $modelClass = "App\\Models\\{$this->argument('model')}";
 
         try {
-            if ($truncate) {
-                $modelClass::truncate();
-            }
+            $fileParser = app()->make(FileParser::class, [
+                'filename' => $this->argument('filename'),
+                'class' => $modelClass,
+            ]);
 
-            $data = $fileParse->parseFile($modelClass, $filename);
+            $this->option('truncate') && $modelClass::truncate();
+
+            $data = $fileParser->parse($modelClass);
             $insertionData->insertArrayIntoTable($data, $modelClass);
 
             $this->info('File was successfully parsed.');
