@@ -41,6 +41,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/users', [UserController::class, 'index'])->name('list');
         Route::post('/users', [UserController::class, 'create'])->name('create');
     });
+    Route::name('directory.')->group(function () {
+        Route::get('/directory', [UserController::class, 'index'])->name('list');
+        //Route::post('/directory', [UserController::class, 'create'])->name('create');
+    });
 });
 
 require __DIR__.'/auth.php';
