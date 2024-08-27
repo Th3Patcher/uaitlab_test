@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Insert;
 
-class InsertionDataService
+class InsertionData
 {
     /**
      * Getting the name and data types of columns from the database
@@ -27,7 +27,7 @@ class InsertionDataService
     }
 
     /**
-     * Cast cell into correct date type
+     * Cast cell into correct data type
      *
      * @param $value
      * @param $type
@@ -71,12 +71,12 @@ class InsertionDataService
             $insertData[] = $rowData;
         }
 
-        try{
+        try {
             \DB::table($table)->insert($insertData);
         } catch (\Exception $exception) {
             $errorCode = $exception->getCode();
 
-            throw new \Exception("Database error [Code: $errorCode]: " .$exception->getMessage());
+            throw new \Exception("Database error [Code: $errorCode]: " . $exception->getMessage());
         }
     }
 }

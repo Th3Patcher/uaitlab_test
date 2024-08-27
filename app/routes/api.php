@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\WarrantyClaimsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('auth:sanctum')->group(function () {
+    Route::prefix('warranty_claims')->group(function () {
+        Route::get('/search', [WarrantyClaimsController::class, 'search']);
+        Route::post('/store', [WarrantyClaimsController::class, 'store']);
+    });
 });
