@@ -1,13 +1,9 @@
+Enter in project folder and run: <br/>
 
+```cp app/.env.exapmle app/.env```<br/>
 
-docker compose exec php bash
+```docker exec -it php-dev bash```<br/>
 
-composer create-project laravel/laravel:^10.0 .
+```php artisan key:generate```<br/>
 
-composer require laravel/breeze --dev
-
-uncomment node container in  docker-compose.yml 
-
-again run  docker compose exec php bash
-
-php artisan breeze:install
+```php artisan migrate```<br/>
