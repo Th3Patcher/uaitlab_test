@@ -1,6 +1,14 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/vue3';
+import {Head, usePage} from '@inertiajs/vue3';
+
+const props = defineProps({
+    token: '',
+});
+
+if (props.token) {
+    localStorage.setItem('access_token', props.token);
+}
 </script>
 
 <template>

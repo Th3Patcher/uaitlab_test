@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DirectoryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
@@ -25,10 +26,14 @@ use Inertia\Inertia;
 //        'phpVersion' => PHP_VERSION,
 //    ]);
 //});
-
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/', function () {
+        return redirect()->route('dashboard');
+    });
+    Route::get('/dashboard', function () {
+        return Inertia::render('Dashboard');
+    })->name('dashboard');
+});
 
 Route::middleware('auth')->group(function () {
     Route::name('profile.')->group(function () {
@@ -39,11 +44,12 @@ Route::middleware('auth')->group(function () {
 
     Route::name('users.')->group(function () {
         Route::get('/users', [UserController::class, 'index'])->name('list');
-        Route::post('/users', [UserController::class, 'create'])->name('create');
+        Route::get('/users/create', [UserController::class, 'create'])->name('create');
+        Route::post('/users', [UserController::class, 'store'])->name('store');
     });
     Route::name('directory.')->group(function () {
-        Route::get('/directory', [UserController::class, 'index'])->name('list');
-        //Route::post('/directory', [UserController::class, 'create'])->name('create');
+        Route::get('/directory', [DirectoryController::class, 'index'])->name('list');
+        //Route::post('/directory', [DirectoryController::class, 'create'])->name('create');
     });
 });
 

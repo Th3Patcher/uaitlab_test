@@ -20,15 +20,37 @@ export default {
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="relative overflow-x-auto rounded-xl shadow-lg">
-                    <ul class="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200">
+                    <!-- Directory Tabs -->
+                    <ul class="flex flex-wrap text-sm font-medium text-center text-gray-400 border-b border-gray-200">
                         <li class="me-2">
-                            <a href="#" aria-current="page" class="inline-block p-4 text-blue-600 bg-gray-100 rounded-t-lg active ">Profile</a>
+                            <a href="#" @click="activeDirectory = 'Defect'"
+                               :class="{'text-blue-600 bg-gray-100': activeDirectory === 'Defect', 'hover:text-gray-600 hover:bg-gray-50': activeDirectory !== 'Defect'}"
+                               class="inline-block p-4 rounded-t-lg">
+                                Defect
+                            </a>
                         </li>
                         <li class="me-2">
-                            <a href="#" class="inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50">Dashboard</a>
+                            <a href="#" @click="activeDirectory = 'Symptom'"
+                               :class="{'text-blue-600 bg-gray-100': activeDirectory === 'Symptom', 'hover:text-gray-600 hover:bg-gray-50': activeDirectory !== 'Symptom'}"
+                               class="inline-block p-4 rounded-t-lg">
+                                Symptom
+                            </a>
                         </li>
                     </ul>
-                    <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+
+                    <!-- Parent ID Tabs -->
+                    <ul class="flex flex-wrap text-sm font-medium text-center text-gray-400 border-b border-gray-200 mt-4">
+                        <li v-for="tab in tabs" :key="tab" class="me-2">
+                            <a href="#" @click="activeTab = tab"
+                               :class="{'text-blue-600 bg-gray-100': activeTab === tab, 'hover:text-gray-600 hover:bg-gray-50': activeTab !== tab}"
+                               class="inline-block p-4 rounded-t-lg">
+                                {{ tab }}
+                            </a>
+                        </li>
+                    </ul>
+
+                    <!-- Table -->
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 mt-4">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                         <tr>
                             <th scope="col" class="px-6 py-3">
@@ -43,26 +65,22 @@ export default {
                         </tr>
                         </thead>
                         <tbody>
-                        <tr v-for="user in users.data" :key="user.id" class="bg-white border-b">
+                        <tr v-for="item in filteredTableData" :key="item.id" class="bg-white border-b">
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                {{ user.id }}
-                            </th>
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                {{ user.email }}
+                                {{ item.id }}
                             </th>
                             <td class="px-6 py-4">
-                                {{ user.name }}
+                                {{ item.name }}
                             </td>
-
                         </tr>
                         </tbody>
                     </table>
-                    <Pagination :pagination="users.meta"/>
                 </div>
             </div>
         </div>
     </AuthenticatedLayout>
 </template>
+
 
 <style scoped>
 
