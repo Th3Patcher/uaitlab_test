@@ -11,8 +11,8 @@ class DirectoryController extends Controller
 {
     public function index()
     {
-        $defectCodes = DefectCodes::all();   // Replace with your actual query logic
-        $symptomCodes = SymptomCodes::all(); // Replace with your actual query logic
+        $defectCodes = DefectCodes::all();
+        $symptomCodes = SymptomCodes::all();
 
         return Inertia::render('Directories/List', [
             'defectCodes' => $defectCodes,

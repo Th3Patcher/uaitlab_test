@@ -6,18 +6,19 @@ import {ref, computed, watch} from 'vue';
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import api from "@/api.js";
 
-defineProps( {
+const props = defineProps( {
     users: Object,
     search: String,
 });
+console.log(props.users);
 let a;
-const test = api.get('/api/warranty_claims/search')
-    .then(response => {
-        console.log(response);
-    }).catch(error => {
-        console.log(error);
-    });
-console.log(a);
+// const test = api.get('/warranty_claims/search')
+//     .then(response => {
+//         console.log(response);
+//     }).catch(error => {
+//         console.log(error);
+//     });
+
 
 let search = ref(usePage().props.search),
     pageNumber = ref(1);
@@ -25,6 +26,10 @@ let search = ref(usePage().props.search),
 let usersUrl = computed(() => {
     let url = new URL(route("users.list"));
     url.searchParams.append("page", pageNumber.value);
+
+    if (pageNumber.value > props.users.meta.last_page) {
+        url.searchParams.set("page", props.users.meta.last_page);
+    }
 
     if (search.value) {
         url.searchParams.append("search", search.value);

@@ -38,7 +38,9 @@ class AuthenticatedSessionController extends Controller
 
         $token = $user->createToken('API_SERVICE')->plainTextToken;
 
-        return Inertia::render('Dashboard', ['token' => $token]);
+        return Inertia::render('Dashboard', [
+            'token' => $token
+        ]);
     }
 
     /**
