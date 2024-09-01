@@ -24,6 +24,12 @@ const form = useForm({
 
 const submit = () => {
     form.post(route('login'), {
+        onSuccess: (page) => {
+            const token = page.props.token;
+            if (token) {
+                localStorage.setItem('token', token);
+            }
+        },
         onFinish: () => form.reset('password'),
     });
 };
