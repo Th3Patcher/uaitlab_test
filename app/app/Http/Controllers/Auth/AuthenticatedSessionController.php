@@ -38,7 +38,7 @@ class AuthenticatedSessionController extends Controller
 
         $token = $user->createToken('API_SERVICE')->plainTextToken;
 
-        return Inertia::render('Dashboard', [
+        return Inertia::render('Admin/Dashboard', [
             'token' => $token
         ]);
     }
@@ -46,14 +46,14 @@ class AuthenticatedSessionController extends Controller
     /**
      * Destroy an authenticated session.
      */
-    public function destroy(Request $request): RedirectResponse
+    public function destroy(Request $request)
     {
-        Auth::guard('web')->logout();
+        Auth::guard('crm')->logout();
 
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return Inertia::render('Auth/Login');
     }
 }

@@ -8,9 +8,6 @@ import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 
 defineProps({
-    canResetPassword: {
-        type: Boolean,
-    },
     status: {
         type: String,
     },
@@ -23,13 +20,8 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post(route('login'), {
-        onSuccess: (page) => {
-            const token = page.props.token;
-            if (token) {
-                localStorage.setItem('token', token);
-            }
-        },
+    console.log(11);
+    form.post(route('login.store'), {
         onFinish: () => form.reset('password'),
     });
 };

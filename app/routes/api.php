@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DirectoryController;
 use App\Http\Controllers\WarrantyClaimsController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,5 +19,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('warranty_claims')->group(function () {
         Route::get('/search', [WarrantyClaimsController::class, 'search']);
         Route::post('/store', [WarrantyClaimsController::class, 'store']);
+    });
+
+    Route::prefix('directories')->group(function () {
+        Route::get('/tab-data', [DirectoryController::class, 'getDirectoryData']);
+        Route::get('/folders', [DirectoryController::class, 'getDirectoryFolders']);
     });
 });

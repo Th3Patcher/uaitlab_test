@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\WarrantyClaim;
 
-use App\Enums\WarrantyClaimsStatus;
+use App\Enums\Warranty\WarrantyClaimsStatus;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
 

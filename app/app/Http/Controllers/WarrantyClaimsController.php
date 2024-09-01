@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\WarrantyClaims;
+use App\Http\Requests\WarrantyClaim\WarrantyClaimsSearchRequest;
 use App\Repositories\WarrantyClaimsRepository;
-use App\Http\Requests\WarrantyClaimsSearchRequest;
 
 class WarrantyClaimsController extends Controller
 {

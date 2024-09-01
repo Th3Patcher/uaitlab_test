@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UserStoreRequest;
+use App\Http\Requests\User\UserStoreRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -17,7 +17,7 @@ class UserController extends Controller
 
         $this->applySearch($query, $request->search);
 
-        return Inertia::render('Users/Users', [
+        return Inertia::render('Admin/Users/Users', [
             'users' => UserResource::collection($query->paginate(10)),
             'search' => $request->search ?? '',
         ]);
@@ -25,7 +25,7 @@ class UserController extends Controller
 
     public function create()
     {
-        return Inertia::render('Users/Create');
+        return Inertia::render('Admin/Users/Create');
     }
 
     public function store(UserStoreRequest $request)
@@ -38,7 +38,7 @@ class UserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        return redirect()->route('users.list');
+        return Redirect::route('users.list');
     }
 
     protected function applySearch($query, $search)

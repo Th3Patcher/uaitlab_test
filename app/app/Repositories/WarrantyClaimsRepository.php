@@ -2,13 +2,13 @@
 
 namespace App\Repositories;
 
-use App\Models\WarrantyClaims;
+use App\Models\WarrantyClaim;
 
 class WarrantyClaimsRepository
 {
     public function buildSearchQuery($validated): \Illuminate\Database\Eloquent\Collection|array
     {
-        $query = WarrantyClaims::query();
+        $query = WarrantyClaim::query();
 
         if (isset($validated['date'])) {
             $query->whereDate('date', '>=', $validated['date']);

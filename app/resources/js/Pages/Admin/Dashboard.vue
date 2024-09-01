@@ -1,6 +1,20 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import {Head} from '@inertiajs/vue3';
+import {onMounted} from "vue";
+
+const props = defineProps({
+    token: {
+        type: String,
+        required: false
+    }
+});
+
+onMounted(() => {
+    if (props.token) {
+        localStorage.setItem('token', props.token);
+    }
+});
 
 </script>
 
