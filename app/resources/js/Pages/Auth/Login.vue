@@ -8,9 +8,6 @@ import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 
 defineProps({
-    canResetPassword: {
-        type: Boolean,
-    },
     status: {
         type: String,
     },
@@ -24,12 +21,6 @@ const form = useForm({
 
 const submit = () => {
     form.post(route('login'), {
-        onSuccess: (page) => {
-            const token = page.props.token;
-            if (token) {
-                localStorage.setItem('token', token);
-            }
-        },
         onFinish: () => form.reset('password'),
     });
 };
@@ -76,13 +67,6 @@ const submit = () => {
                 />
 
                 <InputError class="mt-2" :message="form.errors.password" />
-            </div>
-
-            <div class="block mt-4">
-                <label class="flex items-center">
-                    <Checkbox name="remember" v-model:checked="form.remember" />
-                    <span class="ms-2 text-sm text-gray-600">Remember me</span>
-                </label>
             </div>
 
             <div class="flex items-center justify-center mt-4">

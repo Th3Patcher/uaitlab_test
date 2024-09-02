@@ -2,22 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UserStoreRequest;
+use App\Http\Requests\User\UserStoreRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
 class UserController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request, UserRepository $repository)
     {
-        $query = User::query();
+        $query = $repository->applySearch(User::query(), $request->search);
 
-        $this->applySearch($query, $request->search);
-
-        return Inertia::render('Users/Users', [
+        return Inertia::render('Admin/Users/Users', [
             'users' => UserResource::collection($query->paginate(10)),
             'search' => $request->search ?? '',
         ]);
@@ -25,27 +25,12 @@ class UserController extends Controller
 
     public function create()
     {
-        return Inertia::render('Users/Create');
+        return Inertia::render('Admin/Users/Create');
     }
 
-    public function store(UserStoreRequest $request)
+    public function store(UserStoreRequest $request, UserRepository $repository)
     {
-        $request->validated();
-
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
-
-        return redirect()->route('users.list');
-    }
-
-    protected function applySearch($query, $search)
-    {
-        return $query->when($search, function ($query, $search) {
-            $query->where('name', 'like', '%' . $search . '%')
-                ->orWhere('email', 'like', '%' . $search . '%');
-        });
+        $repository->store($request->validated());
+        return Redirect::route('users.list');
     }
 }

@@ -2,35 +2,40 @@
 
 namespace App\Repositories;
 
-use App\Models\WarrantyClaims;
+use App\Models\WarrantyClaim;
+use Dflydev\DotAccessData\Exception\DataException;
 
 class WarrantyClaimsRepository
 {
-    public function buildSearchQuery($validated): \Illuminate\Database\Eloquent\Collection|array
+    public function buildSearchQuery($data)
     {
-        $query = WarrantyClaims::query();
+        $query = WarrantyClaim::query();
 
-        if (isset($validated['date'])) {
-            $query->whereDate('date', '>=', $validated['date']);
+        if (isset($data['date'])) {
+            $query->whereDate('date', '>=', $data['date']);
         }
 
-        if (isset($validated['datefrom'])) {
-            $query->whereDate('date', '>=', $validated['datefrom']);
+        if (isset($data['datefrom'])) {
+            $query->whereDate('date', '>=', $data['datefrom']);
         }
 
-        if (isset($validated['dateto'])) {
-            $dateto = $validated['dateto'] ?? now()->format('Y-m-d');
+        if (isset($data['dateto'])) {
+            $dateto = $data['dateto'] ?? now()->format('Y-m-d');
             $query->whereDate('date', '<=', $dateto);
         }
 
-        if (isset($validated['status'])) {
-            $query->where('status', $validated['status']);
+        if (isset($data['code_1c'])) {
+            $query->whereIn('code_1c', $data['code_1c']);
         }
 
-        if (isset($validated['code_1c'])) {
-            $query->whereIn('code_1c', $validated['code_1c']);
+        if (isset($data['status'])) {
+            $query->where('status', $data['status']);
         }
 
-        return $query->with(['serviceWorks', 'spareParts', 'technicalConclusions'])->get();
+        if (isset($data['sort_by']) && isset($data['sort_order'])) {
+            $query->orderBy($data['sort_by'], $data['sort_order']);
+        }
+
+        return $query->with(['serviceWorks', 'spareParts', 'technicalConclusions']);
     }
 }
