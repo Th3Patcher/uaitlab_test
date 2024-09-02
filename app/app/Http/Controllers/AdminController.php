@@ -10,10 +10,10 @@ use Inertia\Inertia;
 
 class AdminController extends Controller
 {
-
     public function dashboard() {
         $user = Auth::user();
 
+        //Replace old token on new
         $token = $user->tokens()->where('name', 'API_SERVICE')->first();
 
         if ($token) {

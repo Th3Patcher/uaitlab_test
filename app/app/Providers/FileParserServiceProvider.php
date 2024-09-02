@@ -17,6 +17,7 @@ class FileParserServiceProvider extends ServiceProvider
             $filename = $params['filename'];
             $class = $params['class'];
 
+            //Get extension of file
             $extension = pathinfo($filename, PATHINFO_EXTENSION);
 
             return match ($extension) {
