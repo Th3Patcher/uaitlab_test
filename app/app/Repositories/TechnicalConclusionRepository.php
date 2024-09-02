@@ -2,14 +2,14 @@
 
 namespace App\Repositories;
 
-use App\Models\WarrantyClaim;
-use Dflydev\DotAccessData\Exception\DataException;
+use App\Http\Requests\TechnicalConclusion\SearchTechnicalConclusionRequest;
+use App\Models\TechnicalConclusion;
 
-class WarrantyClaimsRepository
+class TechnicalConclusionRepository
 {
     public function buildSearchQuery($data)
     {
-        $query = WarrantyClaim::query();
+        $query = TechnicalConclusion::query();
 
         if (isset($data['date'])) {
             $query->whereDate('date', '>=', $data['date']);
@@ -28,14 +28,14 @@ class WarrantyClaimsRepository
             $query->whereIn('code_1c', $data['code_1c']);
         }
 
-        if (isset($data['status'])) {
-            $query->where('status', $data['status']);
+        if (isset($data['appeal_type'])) {
+            $query->where('appeal_type', $data['appeal_type']);
         }
 
         if (isset($data['sort_by']) && isset($data['sort_order'])) {
             $query->orderBy($data['sort_by'], $data['sort_order']);
         }
 
-        return $query->with(['serviceWorks', 'spareParts', 'technicalConclusions']);
+        return $query->with(['defectCodes', 'symptomCodes', 'warrantyClaim']);
     }
 }

@@ -1,7 +1,8 @@
 <?php
 
 use App\Http\Controllers\DirectoryController;
-use App\Http\Controllers\WarrantyClaimsController;
+use App\Http\Controllers\TechnicalConclusionController;
+use App\Http\Controllers\WarrantyClaimController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,8 +18,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('warranty_claims')->group(function () {
-        Route::get('/search', [WarrantyClaimsController::class, 'search']);
-        Route::post('/store', [WarrantyClaimsController::class, 'store']);
+        Route::get('/search', [WarrantyClaimController::class, 'search']);
+        Route::post('/store', [WarrantyClaimController::class, 'store']);
+    });
+
+    Route::prefix('technical_conclusions')->group(function () {
+        Route::get('/search', [TechnicalConclusionController::class, 'search']);
+        Route::post('/store', [WarrantyClaimController::class, 'store']);
     });
 
     Route::prefix('directories')->group(function () {
