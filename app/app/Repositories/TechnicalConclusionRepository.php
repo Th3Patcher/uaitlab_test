@@ -4,6 +4,8 @@ namespace App\Repositories;
 
 use App\Http\Requests\TechnicalConclusion\SearchTechnicalConclusionRequest;
 use App\Models\TechnicalConclusion;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class TechnicalConclusionRepository
 {
@@ -37,5 +39,12 @@ class TechnicalConclusionRepository
         }
 
         return $query->with(['defectCodes', 'symptomCodes', 'warrantyClaim']);
+    }
+
+    public function store($data)
+    {
+        return DB::transaction(function () use ($data) {
+            return (bool)TechnicalConclusion::create($data);
+        });
     }
 }

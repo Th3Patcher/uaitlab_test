@@ -24,7 +24,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::prefix('technical_conclusions')->group(function () {
         Route::get('/search', [TechnicalConclusionController::class, 'search']);
-        Route::post('/store', [WarrantyClaimController::class, 'store']);
+        Route::post('/store', [TechnicalConclusionController::class, 'store']);
     });
 
     Route::prefix('directories')->group(function () {

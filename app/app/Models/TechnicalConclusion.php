@@ -9,6 +9,21 @@ class TechnicalConclusion extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+
+    protected $table = 'technical_conclusions';
+    protected $fillable = [
+        'code_1c',
+        'number_1c',
+        'date',
+        'defect_codes_code_1c',
+        'symptom_codes_code_1c',
+        'warranty_claims_code_1c',
+        'conclusion',
+        'resolution',
+        'appeal_type',
+    ];
+
     public function defectCodes()
     {
         return $this->hasOne(DefectCode::class, 'code_1C', 'defect_codes_code_1c');
