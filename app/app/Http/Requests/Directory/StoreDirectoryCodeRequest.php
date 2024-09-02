@@ -21,12 +21,8 @@ class StoreDirectoryCodeRequest extends FormRequest
 
         return [
             'type' => ['required', new Enum(DirectoryType::class)],
-            'folder' => [
-                'required',
+            'folder' => ['nullable', 'string',
                 function ($attribute, $value, $fail) use ($table) {
-                    // Generate the table name based on selected type
-
-
                     // Check if table exists
                     if (!DB::getSchemaBuilder()->hasTable($table)) {
                         $fail("The table {$table} does not exist.");
@@ -40,6 +36,7 @@ class StoreDirectoryCodeRequest extends FormRequest
                 },
             ],
             'name' => ['required', 'unique:' . $table, 'string', 'max:50'],
+            'is_folder' => ['required', 'boolean'],
         ];
     }
 }

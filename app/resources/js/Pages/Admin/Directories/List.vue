@@ -2,11 +2,11 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import Tabs from "@/Components/Tabs.vue"
 import {Head, Link} from "@inertiajs/vue3";
-import {ref, computed, watch, defineComponent} from 'vue';
+import {ref, computed, watch} from 'vue';
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import api from '@/api.js';
 
-const props =   defineProps({
+const props = defineProps({
     defectCodes: Array,
     symptomCodes: Array,
 });
@@ -108,7 +108,7 @@ fetchData();
                                     {{ item.name }}
                                 </td>
                                 <td class="px-6 py-4 font-bold text-lg">
-                                    <Link href="#" class="transition-all duration-200 opacity-0 group-hover:opacity-100 hover:bg-gray-400 rounded p-1">
+                                    <Link :href="route('directory.show', {type: tabs[activeTab], id: item.id})" class="transition-all duration-200 opacity-0 group-hover:opacity-100 hover:bg-gray-400 rounded p-1">
                                         Edit
                                     </Link>
                                 </td>
@@ -122,7 +122,7 @@ fetchData();
                                     {{ child.name }}
                                 </td>
                                 <td class="px-6 py-4">
-                                    <Link href="#" class="transition-all duration-200 hover:bg-gray-400 rounded p-1">
+                                    <Link :href="route('directory.show', {type: tabs[activeTab], id: child.id})" class="transition-all duration-200 hover:bg-gray-400 rounded p-1">
                                         Edit
                                     </Link>
                                 </td>

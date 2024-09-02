@@ -19,18 +19,17 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
     Route::get('login', [AdminController::class, 'login'])->name('login');
-    Route::post('login/store', [AdminController::class, 'store']);
+    Route::post('login', [AdminController::class, 'store']);
 });
 
 Route::middleware('admin.auth')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard')->middleware('verified');
-
     Route::post('logout', [AdminController::class, 'destroy'])->name('logout');
 
     Route::name('profile.')->prefix('/profile')->group(function () {
-        Route::get('', [ProfileController::class, 'edit'])->name('edit');
-        Route::patch('', [ProfileController::class, 'update'])->name('update');
-        Route::delete('', [ProfileController::class, 'destroy'])->name('destroy');
+        Route::get('/profile', [ProfileController::class, 'edit'])->name('edit');
+        Route::patch('/profile', [ProfileController::class, 'update'])->name('update');
+        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('destroy');
     });
 
     Route::name('users.')->prefix('/users')->group(function () {
@@ -40,7 +39,8 @@ Route::middleware('admin.auth')->group(function () {
     });
     Route::name('directory.')->prefix('/directory')->group(function () {
         Route::get('', [DirectoryController::class, 'index'])->name('list');
-        //Route::get('/directory/{directory}', [DirectoryController::class, 'show'])->name('show');
+        Route::get('/show', [DirectoryController::class, 'show'])->name('show');
+        Route::patch('/update', [DirectoryController::class, 'update'])->name('update');
         Route::get('/create', [DirectoryController::class, 'create'])->name('create');
         Route::post('/store', [DirectoryController::class, 'store'])->name('store');
     });

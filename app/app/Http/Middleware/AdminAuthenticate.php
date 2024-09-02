@@ -18,7 +18,7 @@ class AdminAuthenticate
     public function handle(Request $request, Closure $next): Response
     {
         if (!Auth::guard('admin')->check()) {
-            return Redirect::route('login');
+            return Redirect::route('login')->with('error', 'Not enough permission to access this page.');
         }
         return $next($request);
     }

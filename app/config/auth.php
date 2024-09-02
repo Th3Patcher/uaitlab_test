@@ -14,8 +14,8 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'crm',
-        'passwords' => 'users',
+        'guard' => 'admin',
+        'passwords' => 'admins',
     ],
 
     /*
@@ -36,14 +36,15 @@ return [
     */
 
     'guards' => [
+        'user' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
         'admin' => [
             'driver' => 'session',
             'provider' => 'admins',
         ],
-        'crm' => [
-            'driver' => 'session',
-            'provider' => 'users',
-        ],
+
     ],
 
     /*

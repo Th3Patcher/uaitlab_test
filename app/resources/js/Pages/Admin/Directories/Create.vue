@@ -13,6 +13,7 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 const selectedType = ref(null);
 const selectedFolder = ref(null);
 const folders = ref([]);
+const isFolder = ref(false);
 const types = ref([
     {value: 'Defect', label: 'Defect'},
     {value: 'Symptom', label: 'Symptom'},
@@ -22,6 +23,7 @@ const form = useForm({
     type: selectedType.value,
     folder: selectedFolder.value,
     name: '',
+    is_folder: isFolder.value,
 });
 
 const fetchData = async () => {
@@ -41,14 +43,15 @@ const fetchData = async () => {
     }
 };
 
-watch([selectedType, selectedFolder], () => {
+watch([selectedType, selectedFolder, isFolder], () => {
     form.type = selectedType.value;
     form.folder = selectedFolder.value;
+    form.is_folder = isFolder.value;
     if (selectedType.value) {
         fetchData();
     } else {
-        folders.value = []; // Clear folders if no type is selected
-        selectedFolder.value = null; // Clear selected folder
+        folders.value = [];
+        selectedFolder.value = null;
     }
 });
 
@@ -60,7 +63,7 @@ const folder = computed(() => folders.value);
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Directories</h2>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Directories / Create</h2>
         </template>
 
         <div class="py-12">
@@ -80,13 +83,13 @@ const folder = computed(() => folders.value);
                             <div>
                                 <InputLabel value="Select type of directory"/>
                                 <SelectBox v-model="selectedType" :options="types" class="w-full"/>
-                                <InputError class="mt-2" :message="form.errors.type" />
+                                <InputError class="mt-2" :message="form.errors.type"/>
                             </div>
 
-                            <div v-if="selectedType">
-                                <InputLabel value="Select type of folder" />
-                                <SelectBox v-model="selectedFolder" :options="folder" class="w-full" />
-                                <InputError class="mt-2" :message="form.errors.folder" />
+                            <div v-if="selectedType && !isFolder">
+                                <InputLabel value="Select type of folder"/>
+                                <SelectBox v-model="selectedFolder" :options="folder" class="w-full"/>
+                                <InputError class="mt-2" :message="form.errors.folder"/>
                             </div>
 
                             <div>
@@ -104,6 +107,13 @@ const folder = computed(() => folders.value);
                                 <InputError class="mt-2" :message="form.errors.name"/>
                             </div>
 
+                            <label class="inline-flex items-center cursor-pointer">
+                                <input type="checkbox" value="" v-model="isFolder" class="sr-only peer">
+                                <span
+                                    class="relative w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full  after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gray-600"></span>
+                                <span class="ms-3 text-sm font-medium text-gray-900 select-none">Folder</span>
+                            </label>
+
                             <div class="flex items-center gap-4">
                                 <PrimaryButton :disabled="form.processing">Save</PrimaryButton>
 
@@ -113,7 +123,10 @@ const folder = computed(() => folders.value);
                                     leave-active-class="transition ease-in-out"
                                     leave-to-class="opacity-0"
                                 >
-                                    <p v-if="form.recentlySuccessful" class="text-sm text-gray-600">Saved.</p>
+                                    <span>
+                                        <p v-if="form.recentlySuccessful" class="text-sm text-gray-600">Saved.</p>
+                                        <p v-if="form.hasErrors" class="text-sm text-red-300">Error</p>
+                                    </span>
                                 </Transition>
                             </div>
                         </form>
