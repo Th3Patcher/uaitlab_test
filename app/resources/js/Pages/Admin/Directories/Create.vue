@@ -1,6 +1,6 @@
 <script setup>
 import {Head, Link, useForm} from "@inertiajs/vue3";
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+import AuthenticatedLayout from "@/Layouts/AdminLayout.vue";
 import TextInput from "@/Components/TextInput.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import InputError from "@/Components/InputError.vue";
@@ -78,7 +78,7 @@ const folder = computed(() => folders.value);
                             </p>
                         </header>
 
-                        <form @submit.prevent="form.post(route('directory.store'))" class="mt-6 space-y-6">
+                        <form @submit.prevent="form.post(route('admin.directory.store'))" class="mt-6 space-y-6">
 
                             <div>
                                 <InputLabel value="Select type of directory"/>

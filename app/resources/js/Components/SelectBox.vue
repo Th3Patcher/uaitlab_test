@@ -51,8 +51,8 @@ const selectedLabel = computed(() => {
             leave-active-class="transition ease-in duration-150"
             leave-from-class="opacity-100 transform scale-100"
             leave-to-class="opacity-0 transform scale-95">
-            <div v-if="isOpen" class="absolute mt-1 w-full rounded-md shadow-lg bg-white z-10">
-                <ul class="max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
+            <div v-if="isOpen" class="absolute mt-1 w-full rounded-xl shadow-lg bg-white z-50">
+                <ul class="max-h-60 rounded-xl py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
                     <li
                         v-for="option in options"
                         :key="option.value"

@@ -1,30 +1,20 @@
 <script setup>
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+import AuthenticatedLayout from "@/Layouts/AdminLayout.vue";
 import {Head, router, usePage, Link} from "@inertiajs/vue3";
 import Pagination from "@/Components/Pagination.vue";
 import {ref, computed, watch} from 'vue';
 import PrimaryButton from "@/Components/PrimaryButton.vue";
-import api from "@/api.js";
 
 const props = defineProps( {
     users: Object,
     search: String,
 });
-console.log(props.users);
-let a;
-// const test = api.get('/warranty_claims/search')
-//     .then(response => {
-//         console.log(response);
-//     }).catch(error => {
-//         console.log(error);
-//     });
-
 
 let search = ref(usePage().props.search),
     pageNumber = ref(1);
 
 let usersUrl = computed(() => {
-    let url = new URL(route("users.list"));
+    let url = new URL(route("admin.users.list"));
     url.searchParams.append("page", pageNumber.value);
 
     if (pageNumber.value > props.users.meta.last_page) {
@@ -78,7 +68,7 @@ watch(() => usersUrl.value,
                                 </div>
                             </form>
                         </div>
-                        <Link :href="route('users.create')">
+                        <Link :href="route('admin.users.create')">
                             <PrimaryButton
                                     class="flex items-center justify-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 -ml-1 mb-0.5" viewBox="0 0 20 20" fill="currentColor"
