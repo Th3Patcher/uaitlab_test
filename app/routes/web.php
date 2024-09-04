@@ -48,6 +48,7 @@ Route::middleware('auth')->group(function () {
         Route::name('warranty-claims.')->prefix('/warranty-claims')->group(function () {
             Route::get('/table', [WarrantyClaimController::class, 'index'])->name('table');
             Route::get('/create', [WarrantyClaimController::class, 'create'])->name('create');
+            Route::post('/store', [WarrantyClaimController::class, 'store'])->name('store');
         });
 
     });

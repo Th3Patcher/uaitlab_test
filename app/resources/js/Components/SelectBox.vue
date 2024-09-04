@@ -9,6 +9,11 @@ const props = defineProps({
     options: {
         type: Array,
         required: true
+    },
+    placeholder: {
+        type: String,
+        default: 'Select an option',
+        required: false,
     }
 });
 
@@ -29,7 +34,7 @@ const selectOption = (option) => {
 
 const selectedLabel = computed(() => {
     const selectedOption = props.options.find(option => option.value === selectedValue.value);
-    return selectedOption ? selectedOption.label : 'Select an option';
+    return selectedOption ? selectedOption.label : props.placeholder;
 });
 </script>
 
@@ -57,7 +62,7 @@ const selectedLabel = computed(() => {
                         v-for="option in options"
                         :key="option.value"
                         @click="selectOption(option)"
-                        class="cursor-pointer select-none relative py-2 pl-10 pr-4 hover:bg-indigo-600 hover:text-white transition-colors duration-200"
+                        class="cursor-pointer select-none relative py-2 pl-10  hover:bg-indigo-600 hover:text-white transition-colors duration-200"
                         :class="{'bg-indigo-600 text-white': option.value === selectedValue}">
                         <span class="block truncate">{{ option.label }}</span>
                         <span v-if="option.value === selectedValue" class="absolute inset-y-0 left-0 flex items-center pl-3">

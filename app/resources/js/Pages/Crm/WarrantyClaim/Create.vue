@@ -10,27 +10,95 @@ import SelectBox from "@/Components/SelectBox.vue";
 import DatePicker from "@/Components/DatePicker.vue";
 import Section from "@/Pages/Crm/WarrantyClaim/Partials/Section.vue";
 import TextArea from "@/Components/TextArea.vue";
+import SectionServiceWorks from "@/Pages/Crm/WarrantyClaim/Partials/SectionServiceWorks.vue";
+import SectionSpareParts from "@/Pages/Crm/WarrantyClaim/Partials/SectionSpareParts.vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
+import api from "@/api.js";
 
 const user = usePage().props.auth.user;
 const selectedOption = ref(null);
+const selectedGroup = ref(0);
+const info = ref('');
+const options = ref([]);
+
 
 const form = useForm({
-    name: user.name,
-    email: user.email,
-    date: '',
-});
+    //GENERAL
+    document_number: '',
+    document_date: '',
+    autor: '',
+    service_center: '',
 
-const options = ref([
-    {value: 'Test11', label: 'Test11'},
-    {value: 'Test1', label: 'Test1'},
-    {value: 'test3', label: 'test3'}
-]);
+    //DATA OF THE BUYER
+    client_name: '',
+    client_phone: '',
 
+    //DATA OF THE APPLICANT
+    sender_name: '',
+    sender_phone: '',
+
+    //PRODUCT DATA
+    product_article: '',
+    product_name: '',
+    factory_number: '',
+    warranty_card: '',
+    point_of_sale: '',
+    date_of_sale: '',
+    date_of_claim: '',
+    receipt_number: '',
+
+    //DEFECT DESC
+    exact_desc: '',
+    reason_defect: '',
+
+    //OTHER
+    comment: '',
+
+    //SERVICE WORKS
+    serviceworks: [],
+    group: selectedGroup.value,
+
+    //SPAREPARTS
+    spareparts: [],
+})
+
+const createClaim = () => {
+    form.post(route('warranty-claims.store'), {
+        preserveScroll: true,
+        onSuccess: () => form.reset(),
+        onError: (errors) => {
+            console.log(errors);
+        },
+    });
+};
+
+const fetchServices = async () => {
+    try {
+        const response = await api.get('/warranty_claims/service-centers');
+        options.value = response.data.map(item => ({value: item, label: item}));
+    } catch (error) {
+        options.value = [];
+    }
+};
+
+//Spareparts
+const handleUpdateSpareparts = (newSpareparts) => {
+    form.spareparts = newSpareparts;
+}
+const handleUpdateGroup = (newGroup) => {
+    form.group = newGroup
+}
+
+//Service works
+const handleUpdateServiceWork = (newServiceWork) => {
+    form.serviceworks = Array.from(newServiceWork.entries());
+}
 
 watch(form.date, (newDate) => {
-    console.log('Selected Date:', newDate);
     form.date = newDate;
 });
+
+fetchServices();
 </script>
 
 <template>
@@ -42,24 +110,25 @@ watch(form.date, (newDate) => {
 
         <div class="py-12">
             <div class="max-w-screen-2xl mx-auto sm:px-6 lg:px-8">
-                <form>
+                <form @submit.prevent="createClaim">
                     <Section
                         class="w-full"
                         :header="'General information'">
                         <div class="flex-initial basis-[24%]">
-                            <InputLabel for="service_contract" value="No. Document"/>
+                            <InputLabel for="document_number" value="No. Document"/>
 
                             <TextInput
-                                id="service_contract"
+                                id="document_number"
                                 type="text"
                                 class="mt-1 block w-full"
-                                v-model="form.name"
-                                required
+                                v-model="form.document_number"
+                                placeholder="No. Document"
+
                                 autofocus
-                                autocomplete="service_contract"
+                                autocomplete="document_number"
                             />
 
-                            <InputError class="mt-2" :message="form.errors.name"/>
+                            <InputError class="mt-2" :message="form.errors.document_number"/>
                         </div>
 
                         <div class="flex-initial basis-[24%]">
@@ -68,12 +137,11 @@ watch(form.date, (newDate) => {
                             <DatePicker
                                 id="document_date"
                                 class="mt-1 block w-full"
-                                v-model="form.date"
-                                required
+                                v-model="form.document_date"
                                 autofocus
                             />
 
-                            <InputError class="mt-2" :message="form.errors.name"/>
+                            <InputError class="mt-2" :message="form.errors.document_date"/>
                         </div>
 
                         <div class="flex-initial basis-[24%]">
@@ -83,13 +151,12 @@ watch(form.date, (newDate) => {
                                 id="responsible"
                                 type="text"
                                 class="mt-1 block w-full"
-                                v-model="form.name"
-                                required
+                                v-model="form.autor"
                                 autofocus
                                 autocomplete="responsible"
                             />
 
-                            <InputError class="mt-2" :message="form.errors.name"/>
+                            <InputError class="mt-2" :message="form.errors.autor"/>
                         </div>
 
                         <div class="flex-initial basis-[24%]">
@@ -98,11 +165,10 @@ watch(form.date, (newDate) => {
                             <SelectBox
                                 id="service_center"
                                 class="mt-1 block w-full"
-                                v-model="form.name"
-                                required
+                                v-model="form.service_center"
                                 :options="options"/>
 
-                            <InputError class="mt-2" :message="form.errors.name"/>
+                            <InputError class="mt-2" :message="form.errors.service_center"/>
                         </div>
                     </Section>
 
@@ -118,13 +184,12 @@ watch(form.date, (newDate) => {
                                     id="client_name"
                                     type="text"
                                     class="mt-1 block w-full"
-                                    v-model="form.name"
-                                    required
+                                    v-model="form.client_name"
                                     autofocus
                                     autocomplete="client_name"
                                 />
 
-                                <InputError class="mt-2" :message="form.errors.name"/>
+                                <InputError class="mt-2" :message="form.errors.client_name"/>
                             </div>
 
                             <div class="flex-initial basis-[48%]">
@@ -134,13 +199,12 @@ watch(form.date, (newDate) => {
                                     id="client_phone"
                                     type="text"
                                     class="mt-1 block w-full"
-                                    v-model="form.name"
-                                    required
+                                    v-model="form.client_phone"
                                     autofocus
                                     autocomplete="client_phone"
                                 />
 
-                                <InputError class="mt-2" :message="form.errors.name"/>
+                                <InputError class="mt-2" :message="form.errors.client_phone"/>
                             </div>
                         </Section>
                         <Section
@@ -153,13 +217,12 @@ watch(form.date, (newDate) => {
                                     id="sender_name"
                                     type="text"
                                     class="mt-1 block w-full"
-                                    v-model="form.name"
-                                    required
+                                    v-model="form.sender_name"
                                     autofocus
                                     autocomplete="sender_name"
                                 />
 
-                                <InputError class="mt-2" :message="form.errors.name"/>
+                                <InputError class="mt-2" :message="form.errors.sender_name"/>
                             </div>
 
                             <div class="flex-initial basis-[48%]">
@@ -169,13 +232,12 @@ watch(form.date, (newDate) => {
                                     id="sender_phone"
                                     type="text"
                                     class="mt-1 block w-full"
-                                    v-model="form.name"
-                                    required
+                                    v-model="form.sender_phone"
                                     autofocus
                                     autocomplete="sender_phone"
                                 />
 
-                                <InputError class="mt-2" :message="form.errors.name"/>
+                                <InputError class="mt-2" :message="form.errors.sender_phone"/>
                             </div>
                         </Section>
                     </div>
@@ -190,13 +252,12 @@ watch(form.date, (newDate) => {
                                 id="product_article"
                                 type="text"
                                 class="mt-1 block w-full"
-                                v-model="form.name"
-                                required
+                                v-model="form.product_article"
                                 autofocus
                                 autocomplete="product_article"
                             />
 
-                            <InputError class="mt-2" :message="form.errors.name"/>
+                            <InputError class="mt-2" :message="form.errors.product_article"/>
                         </div>
 
                         <div class="flex-initial basis-[24%]">
@@ -205,13 +266,12 @@ watch(form.date, (newDate) => {
                             <TextInput
                                 id="product_name"
                                 class="mt-1 block w-full"
-                                v-model="form.date"
-                                required
+                                v-model="form.product_name"
                                 autofocus
                                 autocomplete="product_name"
                             />
 
-                            <InputError class="mt-2" :message="form.errors.name"/>
+                            <InputError class="mt-2" :message="form.errors.product_name"/>
                         </div>
 
                         <div class="flex-initial basis-[24%]">
@@ -221,43 +281,38 @@ watch(form.date, (newDate) => {
                                 id="factory_number"
                                 type="text"
                                 class="mt-1 block w-full"
-                                v-model="form.name"
-                                required
+                                v-model="form.factory_number"
                                 autofocus
                                 autocomplete="factory_number"
                             />
 
-                            <InputError class="mt-2" :message="form.errors.name"/>
+                            <InputError class="mt-2" :message="form.errors.factory_number"/>
                         </div>
 
                         <div class="flex-initial basis-[24%]">
-                            <InputLabel for="service_contract" value="Barcode of the warranty card"/>
+                            <InputLabel for="warranty_card" value="Barcode of the warranty card"/>
 
                             <TextInput
-                                id="service_contract"
+                                id="warranty_card"
                                 class="mt-1 block w-full"
-                                v-model="form.name"
-                                required
+                                v-model="form.warranty_card"
                                 autofocus
-                                autocomplete="service_contract"
+                                autocomplete="warranty_card"
                             />
 
-                            <InputError class="mt-2" :message="form.errors.name"/>
+                            <InputError class="mt-2" :message="form.errors.warranty_card"/>
                         </div>
 
                         <div class="flex-initial basis-[24%]">
                             <InputLabel for="point_of_sale" value="Point of sale"/>
 
-                            <TextInput
+                            <SelectBox
                                 id="point_of_sale"
                                 class="mt-1 block w-full"
-                                v-model="form.name"
-                                required
-                                autofocus
-                                autocomplete="point_of_sale"
-                            />
+                                v-model="form.point_of_sale"
+                                :options="options"/>
 
-                            <InputError class="mt-2" :message="form.errors.name"/>
+                            <InputError class="mt-2" :message="form.errors.point_of_sale"/>
                         </div>
 
                         <div class="flex-initial basis-[24%]">
@@ -266,12 +321,11 @@ watch(form.date, (newDate) => {
                             <DatePicker
                                 id="date_of_sale"
                                 class="mt-1 block w-full"
-                                v-model="form.date"
-                                required
+                                v-model="form.date_of_sale"
                                 autofocus
                             />
 
-                            <InputError class="mt-2" :message="form.errors.name"/>
+                            <InputError class="mt-2" :message="form.errors.date_of_sale"/>
                         </div>
 
                         <div class="flex-initial basis-[24%]">
@@ -280,27 +334,25 @@ watch(form.date, (newDate) => {
                             <DatePicker
                                 id="date_of_claim"
                                 class="mt-1 block w-full"
-                                v-model="form.date"
-                                required
+                                v-model="form.date_of_claim"
                                 autofocus
                             />
 
-                            <InputError class="mt-2" :message="form.errors.name"/>
+                            <InputError class="mt-2" :message="form.errors.date_of_claim"/>
                         </div>
 
                         <div class="flex-initial basis-[24%]">
-                            <InputLabel for="service_partner" value="Service centre receipt number"/>
+                            <InputLabel for="receipt_number" value="Service centre receipt number"/>
 
                             <TextInput
-                                id="service_partner"
+                                id="receipt_number"
                                 class="mt-1 block w-full"
-                                v-model="form.name"
-                                required
+                                v-model="form.receipt_number"
                                 autofocus
-                                autocomplete="service_partner"
+                                autocomplete="receipt_number"
                             />
 
-                            <InputError class="mt-2" :message="form.errors.name"/>
+                            <InputError class="mt-2" :message="form.errors.receipt_number"/>
                         </div>
                     </Section>
 
@@ -313,14 +365,13 @@ watch(form.date, (newDate) => {
                             <TextArea
                                 id="defect_description"
                                 class="mt-1"
-                                v-model="form.name"
+                                v-model="form.exact_desc"
                                 placeholder="Exact description of the defect"
-                                required
                                 autofocus
                                 autocomplete="defect_description"
                             />
 
-                            <InputError class="mt-2" :message="form.errors.name"/>
+                            <InputError class="mt-2" :message="form.errors.exact_desc"/>
                         </div>
 
                         <div class="flex-initial basis-[48%]">
@@ -329,14 +380,14 @@ watch(form.date, (newDate) => {
                             <TextArea
                                 id="service_contract"
                                 class="mt-1"
-                                v-model="form.name"
+                                v-model="form.reason_defect"
                                 placeholder="Reason for defect"
-                                required
+
                                 autofocus
                                 autocomplete="defect_reason"
                             />
 
-                            <InputError class="mt-2" :message="form.errors.name"/>
+                            <InputError class="mt-2" :message="form.errors.reason_defect"/>
                         </div>
                     </Section>
                     <Section
@@ -348,16 +399,44 @@ watch(form.date, (newDate) => {
                             <TextArea
                                 id="comment"
                                 class="mt-1"
-                                v-model="form.name"
+                                v-model="form.comment"
                                 placeholder="Comment claim"
-                                required
+
                                 autofocus
                                 autocomplete="comment"
                             />
 
-                            <InputError class="mt-2" :message="form.errors.name"/>
+                            <InputError class="mt-2" :message="form.errors.comment"/>
                         </div>
                     </Section>
+
+                    <SectionServiceWorks
+                        class="mt-4"
+                        :group="selectedGroup"
+                        @update:serviceworks="handleUpdateServiceWork"
+                        @update:group="handleUpdateGroup"
+                    />
+
+                    <SectionSpareParts
+                        class="mt-4"
+                        :searchTable="form.spareparts"
+                        @update:spareparts="handleUpdateSpareparts"/>
+
+
+                    <div class="flex items-center gap-4 fixed bottom-12 left-12 ">
+                        <PrimaryButton
+                            class="md:h-16 md:w-48 h-12 w-24"
+                            :disabled="form.processing">Save</PrimaryButton>
+
+                        <Transition
+                            enter-active-class="transition ease-in-out"
+                            enter-from-class="opacity-0"
+                            leave-active-class="transition ease-in-out"
+                            leave-to-class="opacity-0"
+                        >
+                            <p v-if="form.recentlySuccessful" class="text-lg text-green-600">Warranty claim created successfully.</p>
+                        </Transition>
+                    </div>
 
                 </form>
             </div>
