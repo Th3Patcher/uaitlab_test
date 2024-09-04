@@ -9,6 +9,11 @@ const props = defineProps({
     options: {
         type: Array,
         required: true
+    },
+    placeholder: {
+        type: String,
+        default: 'Select an option',
+        required: false,
     }
 });
 
@@ -29,7 +34,7 @@ const selectOption = (option) => {
 
 const selectedLabel = computed(() => {
     const selectedOption = props.options.find(option => option.value === selectedValue.value);
-    return selectedOption ? selectedOption.label : 'Select an option';
+    return selectedOption ? selectedOption.label : props.placeholder;
 });
 </script>
 
@@ -51,13 +56,13 @@ const selectedLabel = computed(() => {
             leave-active-class="transition ease-in duration-150"
             leave-from-class="opacity-100 transform scale-100"
             leave-to-class="opacity-0 transform scale-95">
-            <div v-if="isOpen" class="absolute mt-1 w-full rounded-md shadow-lg bg-white z-10">
-                <ul class="max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
+            <div v-if="isOpen" class="absolute mt-1 w-full rounded-xl shadow-lg bg-white z-50">
+                <ul class="max-h-60 rounded-xl py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
                     <li
                         v-for="option in options"
                         :key="option.value"
                         @click="selectOption(option)"
-                        class="cursor-pointer select-none relative py-2 pl-10 pr-4 hover:bg-indigo-600 hover:text-white transition-colors duration-200"
+                        class="cursor-pointer select-none relative py-2 pl-10  hover:bg-indigo-600 hover:text-white transition-colors duration-200"
                         :class="{'bg-indigo-600 text-white': option.value === selectedValue}">
                         <span class="block truncate">{{ option.label }}</span>
                         <span v-if="option.value === selectedValue" class="absolute inset-y-0 left-0 flex items-center pl-3">

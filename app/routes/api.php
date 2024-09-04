@@ -3,6 +3,8 @@
 use App\Http\Controllers\DirectoryController;
 use App\Http\Controllers\TechnicalConclusionController;
 use App\Http\Controllers\WarrantyClaimController;
+use App\Http\Controllers\WarrantyClaimServiceWorkController;
+use App\Http\Controllers\WarrantyClaimSparepartController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,7 +21,16 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('warranty_claims')->group(function () {
         Route::get('/search', [WarrantyClaimController::class, 'search']);
-        //Route::post('/store', [WarrantyClaimController::class, 'store']);
+        Route::get('/service-centers', [WarrantyClaimController::class, 'getServiceCenters']);
+        Route::post('/store', [WarrantyClaimController::class, 'store']);
+    });
+
+    Route::prefix('warranty_claim_service_works')->group(function () {
+        Route::get('/list', [WarrantyClaimServiceWorkController::class, 'list']);
+    });
+
+    Route::prefix('warranty_claim_spareparts')->group(function () {
+        Route::get('/list', [WarrantyClaimSparepartController::class, 'list']);
     });
 
     Route::prefix('technical_conclusions')->group(function () {

@@ -34,13 +34,12 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        $user = Auth::user();
+        $url = RouteServiceProvider::HOME;
+        if ($request->user()->role === 'admin') {
+            $url = RouteServiceProvider::ADMIN_HOME;
+        }
 
-        $token = $user->createToken('API_SERVICE')->plainTextToken;
-
-        return Inertia::render('Admin/Dashboard', [
-            'token' => $token
-        ]);
+        return redirect()->intended($url);
     }
 
     /**
@@ -54,6 +53,6 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return Inertia::render('Auth/Login');
+        return redirect()->route('login');
     }
 }

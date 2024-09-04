@@ -6,10 +6,7 @@ use App\Http\Requests\Directory\GetDirectoryDataRequest;
 use App\Http\Requests\Directory\ShowDirectoryRequest;
 use App\Http\Requests\Directory\StoreDirectoryCodeRequest;
 use App\Http\Requests\Directory\UpdateDirectoryRequest;
-use App\Models\DefectCode;
-use App\Models\SymptomCode;
 use App\Repositories\DirectoryRepository;
-use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
 class DirectoryController extends Controller
@@ -33,7 +30,7 @@ class DirectoryController extends Controller
                 'type' => $request->get('type'),
             ]);
         } catch (\Exception $e) {
-            return Redirect::route('directory.list');
+            return redirect()->route('admin.directory.list');
         }
     }
 
@@ -41,7 +38,7 @@ class DirectoryController extends Controller
     {
         $data = $request->validated();
         $repository->updateCode($data['id'], $data);
-        return Redirect::route('directory.show', ['type' => $data['type'], 'id' => $data['id']]);
+        return redirect()->route('directory.show', ['type' => $data['type'], 'id' => $data['id']]);
     }
 
     public function create()
@@ -52,7 +49,7 @@ class DirectoryController extends Controller
     public function store(StoreDirectoryCodeRequest $request, DirectoryRepository $repository)
     {
         $repository->create($request->validated());
-        return Redirect::route('directory.create');
+        return redirect()->route('admin.directory.create');
     }
 
     /**

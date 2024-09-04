@@ -4,6 +4,7 @@ import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
+import ApplicationLogo from "@/Components/ApplicationLogo.vue";
 
 const showingNavigationDropdown = ref(false);
 </script>
@@ -16,20 +17,15 @@ const showingNavigationDropdown = ref(false);
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex justify-between h-16">
                         <div class="flex">
-                            <!-- Logo -->
-                            <div class="shrink-0 flex items-center">
-
-                            </div>
-
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
+                                <NavLink :href="route('admin.dashboard')" :active="route().current('admin.dashboard')">
                                     Dashboard
                                 </NavLink>
-                                <NavLink :href="route('users.list')" :active="route().current('users.list')">
+                                <NavLink :href="route('admin.users.list')" :active="route().current('admin.users.list')">
                                     Users
                                 </NavLink>
-                                <NavLink :href="route('directory.list')" :active="route().current('directory.list')">
+                                <NavLink :href="route('admin.directory.list')" :active="route().current('admin.directory.list')">
                                     Directories
                                 </NavLink>
                             </div>
@@ -64,7 +60,7 @@ const showingNavigationDropdown = ref(false);
                                     </template>
 
                                     <template #content>
-                                        <DropdownLink :href="route('profile.edit')"> Profile </DropdownLink>
+                                        <DropdownLink :href="route('admin.profile.edit')"> Profile </DropdownLink>
                                         <DropdownLink :href="route('logout')" method="post" as="button">
                                             Log Out
                                         </DropdownLink>
@@ -112,7 +108,7 @@ const showingNavigationDropdown = ref(false);
                     class="sm:hidden"
                 >
                     <div class="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
+                        <ResponsiveNavLink :href="route('admin.dashboard')" :active="route().current('admin.dashboard')">
                             Dashboard
                         </ResponsiveNavLink>
                     </div>
@@ -127,7 +123,7 @@ const showingNavigationDropdown = ref(false);
                         </div>
 
                         <div class="mt-3 space-y-1">
-                            <ResponsiveNavLink :href="route('profile.edit')"> Profile </ResponsiveNavLink>
+                            <ResponsiveNavLink :href="route('admin.profile.edit')"> Profile </ResponsiveNavLink>
                             <ResponsiveNavLink :href="route('logout')" method="post" as="button">
                                 Log Out
                             </ResponsiveNavLink>

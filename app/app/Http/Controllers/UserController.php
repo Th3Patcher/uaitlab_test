@@ -7,8 +7,6 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
 class UserController extends Controller
@@ -31,6 +29,6 @@ class UserController extends Controller
     public function store(UserStoreRequest $request, UserRepository $repository)
     {
         $repository->store($request->validated());
-        return Redirect::route('users.list');
+        return redirect()->route('admin.users.list');
     }
 }
