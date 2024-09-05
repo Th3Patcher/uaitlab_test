@@ -111,6 +111,7 @@ fetchServices();
         <div class="py-12">
             <div class="max-w-screen-2xl mx-auto sm:px-6 lg:px-8">
                 <form @submit.prevent="createClaim">
+                    <!--General information-->
                     <Section
                         class="w-full"
                         :header="'General information'">
@@ -172,6 +173,7 @@ fetchServices();
                         </div>
                     </Section>
 
+                    <!--Data of the buyer and applicant-->
                     <div class="flex flex-row mt-4 gap-5">
                         <Section
                             class="basis-1/2"
@@ -242,6 +244,7 @@ fetchServices();
                         </Section>
                     </div>
 
+                    <!--Product data-->
                     <Section
                         class="w-full mt-4"
                         :header="'Product data'">
@@ -356,6 +359,7 @@ fetchServices();
                         </div>
                     </Section>
 
+                    <!--Defect description-->
                     <Section
                         class="w-full mt-4"
                         :header="'Defect description'">
@@ -390,6 +394,8 @@ fetchServices();
                             <InputError class="mt-2" :message="form.errors.reason_defect"/>
                         </div>
                     </Section>
+
+                    <!--Other-->
                     <Section
                         class="w-full mt-4"
                         :header="'Other'">
@@ -422,7 +428,7 @@ fetchServices();
                         :searchTable="form.spareparts"
                         @update:spareparts="handleUpdateSpareparts"/>
 
-
+                    <!--Floating button-->
                     <div class="flex items-center gap-4 fixed bottom-12 left-12 ">
                         <PrimaryButton
                             class="md:h-16 md:w-48 h-12 w-24"

@@ -11,10 +11,6 @@ use Inertia\Inertia;
 
 class DirectoryController extends Controller
 {
-    /**
-     *  WEB
-     */
-
     public function index()
     {
         return Inertia::render('Admin/Directories/List');
@@ -51,10 +47,6 @@ class DirectoryController extends Controller
         $repository->create($request->validated());
         return redirect()->route('admin.directory.create');
     }
-
-    /**
-     *  API
-     */
 
     public function getDirectoryData(GetDirectoryDataRequest $request, DirectoryRepository $repository)
     {

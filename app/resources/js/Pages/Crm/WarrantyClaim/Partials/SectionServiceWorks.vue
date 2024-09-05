@@ -60,13 +60,13 @@ watch([selectedGroup, search], async () => {
                             <InputError class="mt-2" :message="errors"/>
             <div class="relative">
                 <div
-                    class="flex flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between pb-4">
+                    class="flex flex-row space-y-4 sm:space-y-0 items-center align-middle justify-between pb-4">
                     <SelectBox
                         :placeholder="'Choose a group of items'"
                         :options="groups"
                         v-model="selectedGroup"
                     />
-                    <Search class="inline-block w-1/3"
+                    <Search class="inline-block !w-1/3"
                             :placeholder="'Insert name of service works'"
                             v-model="search"
                     />

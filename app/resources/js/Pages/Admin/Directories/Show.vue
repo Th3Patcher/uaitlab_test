@@ -1,6 +1,6 @@
 <script setup>
 
-import AuthenticatedLayout from "@/Layouts/AdminLayout.vue";
+import AdminLayout from "@/Layouts/AdminLayout.vue";
 import {Head, useForm} from "@inertiajs/vue3";
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
@@ -24,7 +24,7 @@ const form = useForm({
 <template>
     <Head title="Directories"/>
 
-    <AuthenticatedLayout>
+    <AdminLayout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Directories / Edit {{ props.type }}</h2>
         </template>
@@ -78,7 +78,7 @@ const form = useForm({
                 </div>
             </div>
         </div>
-    </AuthenticatedLayout>
+    </AdminLayout>
 </template>
 
 <style scoped>

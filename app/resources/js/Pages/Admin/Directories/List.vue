@@ -1,5 +1,5 @@
 <script setup>
-import AuthenticatedLayout from "@/Layouts/AdminLayout.vue";
+import AdminLayout from "@/Layouts/AdminLayout.vue";
 import Tabs from "@/Components/Tabs.vue"
 import {Head, Link} from "@inertiajs/vue3";
 import {ref, computed, watch} from 'vue';
@@ -45,7 +45,7 @@ fetchData();
 <template>
     <Head title="Directories"/>
 
-    <AuthenticatedLayout>
+    <AdminLayout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Directories</h2>
         </template>
@@ -133,7 +133,7 @@ fetchData();
                 </div>
             </div>
         </div>
-    </AuthenticatedLayout>
+    </AdminLayout>
 </template>
 
 

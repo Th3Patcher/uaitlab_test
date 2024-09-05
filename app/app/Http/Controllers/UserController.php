@@ -15,7 +15,7 @@ class UserController extends Controller
     {
         $query = $repository->applySearch(User::query(), $request->search);
 
-        return Inertia::render('Admin/Users/Users', [
+        return Inertia::render('Admin/Users/List', [
             'users' => UserResource::collection($query->paginate(10)),
             'search' => $request->search ?? '',
         ]);

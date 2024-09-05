@@ -1,9 +1,9 @@
 <script setup>
-import AuthenticatedLayout from "@/Layouts/AdminLayout.vue";
 import {Head, router, usePage, Link} from "@inertiajs/vue3";
 import Pagination from "@/Components/Pagination.vue";
 import {ref, computed, watch} from 'vue';
 import PrimaryButton from "@/Components/PrimaryButton.vue";
+import AdminLayout from "@/Layouts/AdminLayout.vue";
 
 const props = defineProps( {
     users: Object,
@@ -46,7 +46,7 @@ watch(() => usersUrl.value,
 <template>
     <Head title="Users"/>
 
-    <AuthenticatedLayout>
+    <AdminLayout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Users</h2>
         </template>
@@ -113,7 +113,7 @@ watch(() => usersUrl.value,
                 </div>
             </div>
         </div>
-    </AuthenticatedLayout>
+    </AdminLayout>
 </template>
 
 <style scoped>
