@@ -34,7 +34,7 @@ class DirectoryController extends Controller
     {
         $data = $request->validated();
         $repository->updateCode($data['id'], $data);
-        return redirect()->route('directory.show', ['type' => $data['type'], 'id' => $data['id']]);
+        return redirect()->route('admin.directory.show', ['type' => $data['type'], 'id' => $data['id']]);
     }
 
     public function create()
@@ -45,7 +45,7 @@ class DirectoryController extends Controller
     public function store(StoreDirectoryCodeRequest $request, DirectoryRepository $repository)
     {
         $repository->create($request->validated());
-        return redirect()->route('admin.directory.create');
+        return redirect()->back();
     }
 
     public function getDirectoryData(GetDirectoryDataRequest $request, DirectoryRepository $repository)
