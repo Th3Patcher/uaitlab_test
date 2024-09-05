@@ -1,6 +1,6 @@
 <script setup>
-import {Head, Link, useForm} from "@inertiajs/vue3";
-import AuthenticatedLayout from "@/Layouts/AdminLayout.vue";
+import {Head, useForm} from "@inertiajs/vue3";
+import AdminLayout from "@/Layouts/AdminLayout.vue";
 import TextInput from "@/Components/TextInput.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import InputError from "@/Components/InputError.vue";
@@ -61,7 +61,7 @@ const folder = computed(() => folders.value);
 <template>
     <Head title="Directory - Create"/>
 
-    <AuthenticatedLayout>
+    <AdminLayout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Directories / Create</h2>
         </template>
@@ -134,7 +134,7 @@ const folder = computed(() => folders.value);
                 </div>
             </div>
         </div>
-    </AuthenticatedLayout>
+    </AdminLayout>
 </template>
 
 <style scoped>
